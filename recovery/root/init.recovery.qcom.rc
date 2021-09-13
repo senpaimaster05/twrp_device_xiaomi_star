@@ -26,7 +26,9 @@
 #
 
 import /init.recovery.qcom_decrypt.rc
- 
+import /init.recovery.qcom_decrypt.fbe.rc
+
+
 on boot
     mknod /dev/xiaomi_touch c 10 120
     chown system system /dev/xiaomi-touch
