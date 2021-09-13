@@ -47,3 +47,8 @@ on fs
 on boot
     start boot-hal-1-1
     start health-hal-2-1
+
+on init
+    wait /dev/qseecom
+    start qseecomd
+    start keymaster-4-1
