@@ -1,0 +1,100 @@
+# Copyright (c) 2017 Xiaomi, Inc.
+# All Rights Reserved.
+# Confidential and Proprietary - Xiaomi, Inc.
+#
+on post-fs-data
+    mkdir /data/vendor/mqsas_common 0771 root system
+    mkdir /data/vendor/touch 0771 root system
+on boot
+    chown root system /dev/xiaomi-touch
+    chmod 0664 /dev/xiaomi-touch
+    chown root system /dev/xiaomi-thp
+    chmod 0664 /dev/xiaomi-thp
+    chown root system /sys/class/touch/tp_dev/fod_status
+    chmod 0664 /sys/class/touch/tp_dev/fod_status
+    chown root system /proc/tp_selftest
+    chmod 0664 /proc/tp_selftest
+    chown root system /proc/tp_selftest_1
+    chmod 0664 /proc/tp_selftest_1
+    chown root system /sys/class/touch/touch_dev/clicktouch_raw
+    chmod 0664 /sys/class/touch/touch_dev/clicktouch_raw
+    chown root system /sys/class/touch/touch_dev/update_rawdata
+    chmod 0664 /sys/class/touch/touch_dev/update_rawdata
+    chown root system /sys/class/touch/touch_dev/enable_touch_raw
+    chmod 0664 /sys/class/touch/touch_dev/enable_touch_raw
+    chown root system /sys/class/touch/touch_dev/enable_touch_delta
+    chmod 0664 /sys/class/touch/touch_dev/enable_touch_delta
+    chown root system /sys/class/touch/touch_dev/touch_thp_dump
+    chmod 0664 /sys/class/touch/touch_dev/touch_thp_dump
+    chown root system /sys/class/touch/touch_dev/touch_thp_cmd
+    chmod 0664 /sys/class/touch/touch_dev/touch_thp_cmd
+    chown root system /sys/class/touch/touch_dev/suspend_state
+    chmod 0664 /sys/class/touch/touch_dev/suspend_state
+    chown root system /sys/class/touch/touch_dev/prox_sensor_data
+    chmod 0664 /sys/class/touch/touch_dev/prox_sensor_data
+    chown root system /sys/class/touch/touch_dev/prox_sensor
+    chmod 0664 /sys/class/touch/touch_dev/prox_sensor
+    chown root system /sys/class/touch/touch_dev/touch_thp_rx_num
+    chmod 0664 /sys/class/touch/touch_dev/touch_thp_rx_num
+    chown root system /sys/class/touch/touch_dev/touch_thp_tx_num
+    chmod 0664 /sys/class/touch/touch_dev/touch_thp_tx_num
+    chown root system /sys/class/touch/touch_dev/touch_thp_x_resolution
+    chmod 0664 /sys/class/touch/touch_dev/touch_thp_x_resolution
+    chown root system /sys/class/touch/touch_dev/touch_thp_y_resolution
+    chmod 0664 /sys/class/touch/touch_dev/touch_thp_y_resolution
+    chown root system /sys/class/touch/touch_dev/touch_thp_smooth
+    chmod 0664 /sys/class/touch/touch_dev/touch_thp_smooth
+    chown root system /sys/class/touch/touch_dev/touch_thp_noisefilter
+    chmod 0664 /sys/class/touch/touch_dev/touch_thp_noisefilter
+    chown root system /sys/class/touch/touch_dev/touch_thp_downthd
+    chmod 0664 /sys/class/touch/touch_dev/touch_thp_downthd
+    chown root system /sys/class/touch/touch_dev/touch_thp_upthd
+    chmod 0664 /sys/class/touch/touch_dev/touch_thp_upthd
+    chown root system /sys/class/touch/touch_dev/touch_thp_movethd
+    chmod 0664 /sys/class/touch/touch_dev/touch_thp_movethd
+    chown root system /sys/class/touch/touch_dev/touch_thp_islandthd
+    chmod 0664 /sys/class/touch/touch_dev/touch_thp_islandthd
+    chown root system /sys/class/touch/touch_dev/touch_thp_cmd
+    chmod 0664 /sys/class/touch/touch_dev/touch_thp_cmd
+
+service touchfeature_v2-hal-1-0 /vendor/bin/hw/vendor.xiaomi.hw.touchfeature@1.0-service
+    class hal
+    user root
+    group root system
+    onrestart restart touchfeature
+    disabled
+    seclabel u:r:recovery:s0
+
+service toucheventcheck /vendor/bin/toucheventcheck
+    class main
+    user root
+    group root
+    oneshot
+    disabled
+    seclabel u:r:recovery:s0
+
+service panel-info-sh /system/vendor/bin/sh /vendor/etc/init.panel_info.sh
+    class core
+    user root
+    oneshot
+    disabled
+    seclabel u:r:recovery.sh
+
+service focal_thp /vendor/bin/focal_thp
+    class hal
+    user root
+    group root system uhid input
+    onrestart restart focal_thp
+    disabled
+    seclabel u:r:recovery:s0
+
+service touch-boost-sh /system/vendor/bin/sh /vendor/etc/tp_boost_renoir.sh
+    class late_start
+    user root
+    oneshot
+    disabled
+    seclabel u:r:recovery:s0
+
+on property:sys.boot_completed=1
+    start touch-boost-sh
+
