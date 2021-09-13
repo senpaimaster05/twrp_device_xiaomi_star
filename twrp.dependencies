@@ -1,0 +1,8 @@
+[
+ {
+   "repository"  : "android_device_qcom_twrp-common",
+   "target_path" : "device/qcom/twrp-common",
+   "remote"      : "TeamWin",
+   "revision"    : "android-11"
+ }
+]

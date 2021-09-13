@@ -1,0 +1,10 @@
+# mount point       fstype    device                                                                flags
+/metadata           ext4      /dev/block/bootdevice/by-name/metadata                                flags=display="Metadata";
+/cache              ext4      /dev/block/bootdevice/by-name/rescue                                  flags=display="Cache";
+/boot               emmc      /dev/block/bootdevice/by-name/boot                                    flags=display="Boot";backup=1;flashimg=1;
+/cust               ext4      /dev/block/bootdevice/by-name/cust                                    flags=display="Cust";
+/cust_image         emmc      /dev/block/bootdevice/by-name/cust                                    flags=display="Cust image";backup=1;flashimg=1;
+
+# removable
+/usb_otg	vfat    /dev/block/sdg1       									/dev/block/sdg		flags=fsflags=utf8;display="USB-OTG";storage;removable
+/external_sd	vfat    /dev/block/mmcblk0p1  									/dev/block/mmcblk0	flags=display="MicroSD";storage;removable
