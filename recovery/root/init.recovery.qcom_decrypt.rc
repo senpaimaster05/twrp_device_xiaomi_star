@@ -28,6 +28,7 @@ on property:ro.crypto.type=block && property:ro.crypto.fs_crypto_blkdev=*
     setprop crypto.ready 0
     stop qseecomd
     stop keymaster-4-1
+    stop keymaster-4-0
 
 # For Android 10+ trees, services should be placed in /system/bin in the recovery ramdisk
 # For older trees, the services should be placed in /sbin
