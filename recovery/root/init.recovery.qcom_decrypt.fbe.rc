@@ -4,12 +4,6 @@ on property:ro.crypto.state=encrypted && property:ro.crypto.type=file
 on property:vendor.sys.listeners.registered=true
     start gatekeeper-1-0
 
-on property:twrp.all.users.decrypted=true
-    setprop crypto.ready 0
-    stop qseecomd
-    stop gatekeeper-1-0
-    stop keymaster-4-1
-
 # For Android 10+ trees, services should be placed in /system/bin in the recovery ramdisk
 # For older trees, the services should be placed in /sbin
 # Make sure the path EXACTLY matches the final location of the binary!!
