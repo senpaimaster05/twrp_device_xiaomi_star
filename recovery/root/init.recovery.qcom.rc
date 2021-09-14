@@ -29,13 +29,7 @@ import /init.recovery.qcom_decrypt.rc
 import /init.recovery.qcom_decrypt.fbe.rc
 
 
-on boot
-    mknod /dev/xiaomi_touch c 10 120
-    chown system system /dev/xiaomi-touch
-    chmod 0664 /dev/xiaomi-touch
-    insmod /vendor/lib/modules/xiaomi_touch.ko
-    insmod /vendor/lib/modules/fts_touch_spi.ko
-
+on early-fs
     insmod /vendor/lib/modules/q6_pdr_dlkm.ko
     insmod /vendor/lib/modules/q6_notifier_dlkm.ko
     insmod /vendor/lib/modules/snd_event_dlkm.ko
