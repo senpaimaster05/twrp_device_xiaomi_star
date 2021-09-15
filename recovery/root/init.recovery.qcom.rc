@@ -30,9 +30,10 @@ import /init.recovery.qcom_decrypt.fbe.rc
 
 
 on early-fs
-    insmod /vendor/lib/modules/q6_pdr_dlkm.ko
+    insmod /vendor/lib/modules/fts_touch_spi.ko
+    insmod /vendor/lib/modules/focaltech_touch.ko
     insmod /vendor/lib/modules/q6_notifier_dlkm.ko
-    insmod /vendor/lib/modules/snd_event_dlkm.ko
+    insmod /vendor/lib/modules/fts_touch_spi.ko
     insmod /vendor/lib/modules/apr_dlkm.ko
     insmod /vendor/lib/modules/adsp_loader_dlkm.ko
 
@@ -41,7 +42,7 @@ on fs
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
         
 on boot
-    start boot-hal-1-1
+    start vendor.boot-hal-1-1
     start health-hal-2-1
 
 on init

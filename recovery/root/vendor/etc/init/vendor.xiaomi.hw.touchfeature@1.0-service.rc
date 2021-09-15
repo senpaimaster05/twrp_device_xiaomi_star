@@ -68,7 +68,7 @@ service touchfeature_v2-hal-1-0 /vendor/bin/hw/vendor.xiaomi.hw.touchfeature@1.0
 
 service toucheventcheck /vendor/bin/toucheventcheck
     class main
-    user root
+    user system
     group system
     oneshot
     disabled
@@ -76,7 +76,7 @@ service toucheventcheck /vendor/bin/toucheventcheck
 
 service panel-info-sh /system/vendor/bin/sh /vendor/etc/init.panel_info.sh
     class core
-    user root
+    user system
     group system
     oneshot
     disabled
@@ -84,7 +84,7 @@ service panel-info-sh /system/vendor/bin/sh /vendor/etc/init.panel_info.sh
 
 service focal_thp /vendor/bin/focal_thp
     class hal
-    user root
+    user system
     group system system uhid input
     onrestart restart focal_thp
     disabled
@@ -92,7 +92,7 @@ service focal_thp /vendor/bin/focal_thp
 
 service touch-boost-sh /system/vendor/bin/sh /vendor/etc/tp_boost_renoir.sh
     class late_start
-    user root
+    user system
     group system
     oneshot
     disabled
