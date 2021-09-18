@@ -31,10 +31,6 @@ on early-init
     insmod /vendor/lib/modules/apr_dlkm.ko
     insmod /vendor/lib/modules/adsp_loader_dlkm.ko
 
-on init
-    write /sys/class/backlight/panel0-backlight/brightness 200
-    setprop sys.usb.configfs 1
-
 on property:ro.boot.usbcontroller=*
     setprop sys.usb.controller ${ro.boot.usbcontroller}
     write /sys/class/udc/${ro.boot.usbcontroller}/device/../mode peripheral
@@ -42,10 +38,6 @@ on property:ro.boot.usbcontroller=*
 on fs
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
-    mkdir /vendor/firmware_mnt
-    mkdir /vendor/firmware
-    mount_all /vendor/etc/charger_fstab.qti --early
-    mount none /vendor/firmware_mnt/image /vendor/firmware bind rec
-    wait /sys/kernel/boot_adsp/boot
-    write /sys/kernel/boot_adsp/boot 1
-    wait /sys/class/power_supply/battery
+
+import /init.recovery.qcom_decrypt.rc
+import /init.recovery.qcom_decrypt.fbe.rc
