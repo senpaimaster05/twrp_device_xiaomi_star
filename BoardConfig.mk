@@ -126,8 +126,7 @@ BOARD_AVB_RECOVERY_ROLLBACK_INDEX_LOCATION := 2
 PLATFORM_SECURITY_PATCH := 2099-12-31
 VENDOR_SECURITY_PATCH := 2099-12-31
 TW_INCLUDE_CRYPTO := true
-BOARD_USES_QCOM_FBE_DECRYPTION := true
-BOARD_USES_QCOM_DECRYPTION := true
+TW_INCLUDE_CRYPTO_FBE := true
 TW_INCLUDE_METADATA_DECRYPT := true
 
 TARGET_RECOVERY_DEVICE_MODULES += libion libandroidicu vendor.display.config@1.0 vendor.display.config@2.0 libdisplayconfig.qti vendor.qti.hardware.vibrator.service vendor.qti.hardware.vibrator.impl libqtivibratoreffect
@@ -142,6 +141,7 @@ BOARD_USES_METADATA_PARTITION := true
 
 # TWRP Configuration
 TW_THEME := portrait_hdpi
+RECOVERY_SDCARD_ON_DATA := true
 TARGET_RECOVERY_QCOM_RTC_FIX := true
 TW_EXCLUDE_DEFAULT_USB_INIT := true
 TW_EXTRA_LANGUAGES := true

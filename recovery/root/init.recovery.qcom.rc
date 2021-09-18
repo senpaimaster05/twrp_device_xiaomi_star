@@ -25,9 +25,13 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
+on early-fs
+    start vold
+
 on fs
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
+    install_keyring
     
 service vendor.qti.vibrator /system/bin/vendor.qti.hardware.vibrator.service
     user root
@@ -63,3 +67,57 @@ on post-fs
     start boot-hal-1-1
     start boot-hal-1-0
     
+on init
+    setprop crypto.ready 1
+    exec u:r:vendor_init-qti-keymaster-sh:s0 -- /vendor/bin/init.qti.keymaster.sh
+    start vendor.keymaster-4-1
+    wait /dev/qseecom
+    start qseecomd
+    
+service qseecomd /system/bin/qseecomd
+    user root
+    group root
+    setenv LD_LIBRARY_PATH /vendor/lib64:/system/lib64
+    disabled
+    seclabel u:r:recovery:s0
+
+service keystore_auth /system/bin/keystore_auth
+    oneshot
+    user system
+    group root
+    disabled
+    seclabel u:r:recovery:s0
+
+# keystore is started and stopped on demand by TWRP
+service keystore /system/bin/keystore /tmp/misc/keystore
+    user root
+    group root drmrpc readproc
+    disabled
+    seclabel u:r:recovery:s0
+
+service gatekeeper-1-0 /system/bin/android.hardware.gatekeeper@1.0-service-qti
+    user root
+    group root
+    setenv LD_LIBRARY_PATH /vendor/lib64:/system/lib64
+    disabled
+    seclabel u:r:recovery:s0
+
+service vendor.keymaster-4-1 /system/bin/android.hardware.keymaster@4.0-service-qti
+    user root
+    group root
+    setenv LD_LIBRARY_PATH /vendor/lib64:/system/lib64
+    disabled
+    seclabel u:r:recovery:s0
+
+on property:crypto.ready=0
+    stop qseecomd
+    stop vendor.keymaster-4-1
+    stop gatekeeper-1-0
+    stop servicemanager
+
+on property:crypto.ready=1
+    start qseecomd
+
+on property:vendor.sys.listeners.registered=true
+    start vendor.keymaster-4-1
+    start gatekeeper-1-0
