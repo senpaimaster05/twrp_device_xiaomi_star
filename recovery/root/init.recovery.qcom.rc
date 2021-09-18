@@ -24,28 +24,28 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-
-import /init.recovery.qcom_decrypt.rc
-import /init.recovery.qcom_decrypt.fbe.rc
-
-
-on early-fs
-    insmod /vendor/lib/modules/fts_touch_spi.ko
-    insmod /vendor/lib/modules/focaltech_touch.ko
+on early-init
+    insmod /vendor/lib/modules/q6_pdr_dlkm.ko
     insmod /vendor/lib/modules/q6_notifier_dlkm.ko
-    insmod /vendor/lib/modules/fts_touch_spi.ko
+    insmod /vendor/lib/modules/snd_event_dlkm.ko
     insmod /vendor/lib/modules/apr_dlkm.ko
     insmod /vendor/lib/modules/adsp_loader_dlkm.ko
+
+on init
+    write /sys/class/backlight/panel0-backlight/brightness 200
+    setprop sys.usb.configfs 1
+
+on property:ro.boot.usbcontroller=*
+    setprop sys.usb.controller ${ro.boot.usbcontroller}
+    write /sys/class/udc/${ro.boot.usbcontroller}/device/../mode peripheral
 
 on fs
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
-        
-on boot
-    start vendor.boot-hal-1-1
-    start health-hal-2-1
-
-on init
-    wait /dev/qseecom
-    start qseecomd
-    start keymaster-4-1
+    mkdir /vendor/firmware_mnt
+    mkdir /vendor/firmware
+    mount_all /vendor/etc/charger_fstab.qti --early
+    mount none /vendor/firmware_mnt/image /vendor/firmware bind rec
+    wait /sys/kernel/boot_adsp/boot
+    write /sys/kernel/boot_adsp/boot 1
+    wait /sys/class/power_supply/battery
