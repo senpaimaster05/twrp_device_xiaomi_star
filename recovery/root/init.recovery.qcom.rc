@@ -62,11 +62,7 @@ service touchfeature_v2-hal-1-0 /vendor/bin/hw/vendor.xiaomi.hw.touchfeature@1.0
     
 on boot
     start health-hal-2-1
-    
-on post-fs
-    start boot-hal-1-1
-    start boot-hal-1-0
-    
+       
 on init
     setprop crypto.ready 1
     exec u:r:vendor_init-qti-keymaster-sh:s0 -- /vendor/bin/init.qti.keymaster.sh
